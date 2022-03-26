@@ -5,6 +5,7 @@ import io.restassured.common.mapper.TypeRef;
 import io.restassured.response.Response;
 import org.junit.Assert;
 import org.junit.Test;
+import pojo.StarWarsPojo;
 
 import java.util.List;
 import java.util.Map;
@@ -43,4 +44,19 @@ public class StarWars {
 
 
     }
+
+    @Test
+    public void deserializeWithPojo() {
+
+        Response response = RestAssured.given()
+                .header("Accept", "application/json")
+                .when().get("https://swapi.dev/api/people")
+                .then().statusCode(200).extract().response();
+
+        StarWarsPojo deserializedResp = response.as(StarWarsPojo.class);
+        Assert.assertEquals(82, deserializedResp.getCount());
+
+    }
+
+
 }
