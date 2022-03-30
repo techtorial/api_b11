@@ -4,6 +4,7 @@ import io.restassured.RestAssured;
 import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
+import pojo.SlackMessagePojo;
 import utils.PayloadUtil;
 
 import java.io.File;
@@ -68,6 +69,32 @@ public class Slack {
                 .when().post()
                 .then().statusCode(200)
                 .and().body("ok", Matchers.is(true));
+
+    }
+
+
+    @Test
+    public void sendMessageWithPojoTest(){
+
+        SlackMessagePojo slackMessage = new SlackMessagePojo();
+
+        slackMessage.setChannel("C0397J4JY3T");
+        slackMessage.setText("Temirlan: Hello from java Pojo");
+
+
+        RestAssured.given()
+                .accept(APPLICATION_JSON)
+                .contentType(APPLICATION_JSON)
+                .auth().oauth2("xoxb-2694972852931-3301004561938-aacdTvY8jFOXXe6YvdGZ7efn")
+                .body(slackMessage)
+                .when().post()
+                .then().statusCode(200)
+                .body("ok", Matchers.is(true));
+
+
+
+
+
 
 
     }
